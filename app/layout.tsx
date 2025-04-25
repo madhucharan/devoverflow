@@ -17,7 +17,7 @@ const spaceGrotesk = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "DevOverFlow",
+  title: "Dev Overflow",
   description: "No! It's not a clone of Stack Overflow.",
 };
 
