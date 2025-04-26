@@ -400,8 +400,6 @@ code {
   overflow-y: auto !important;
 }
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -457,8 +455,6 @@ code {
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {
