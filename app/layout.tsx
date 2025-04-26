@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import React from "react";
 
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
 
 const inter = localFont({
   src: "./fonts/InterVF.ttf",
@@ -19,6 +20,9 @@ const spaceGrotesk = localFont({
 export const metadata: Metadata = {
   title: "Dev Overflow",
   description: "No! It's not a clone of Stack Overflow.",
+  icons: {
+    icon: "/images/site-logo.svg",
+  },
 };
 
 export default function RootLayout({
@@ -27,11 +31,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.className} ${spaceGrotesk.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
