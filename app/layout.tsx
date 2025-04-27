@@ -8,7 +8,6 @@ import { Toaster } from "sonner";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 
-
 const inter = localFont({
   src: "./fonts/InterVF.ttf",
   variable: "--font-inter",
