@@ -15,7 +15,7 @@ export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
 
   queryString[key] = value;
 
-  return qs.stringify({ url: window.location.pathname, query: queryString });
+  return qs.stringifyUrl({ url: window.location.pathname, query: queryString });
 };
 
 export const removeKeysFromQuery = ({
@@ -28,7 +28,7 @@ export const removeKeysFromQuery = ({
     delete queryString[key];
   });
 
-  return qs.stringify(
+  return qs.stringifyUrl(
     { url: window.location.pathname, query: queryString },
     { skipNull: true }
   );
