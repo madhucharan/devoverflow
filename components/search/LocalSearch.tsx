@@ -1,46 +1,51 @@
 "use client";
-import React, { useEffect } from "react";
-import { Input } from "../ui/input";
+
 import Image from "next/image";
-import { usePathname, useSearchParams } from "next/navigation";
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/url";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import { formUrlQuery, removeKeysFromUrlQuery } from "@/lib/url";
+
+import { Input } from "../ui/input";
 
 interface Props {
+  route: string;
   imgSrc: string;
   placeholder: string;
   otherClasses?: string;
-  route: string;
 }
 
-const LocalSearch = ({ imgSrc, placeholder, otherClasses, route }: Props) => {
+const LocalSearch = ({ route, imgSrc, placeholder, otherClasses }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const query = searchParams.get("query") || "";
 
-  const [searchQuery, setSearchQuery] = React.useState(query);
+  const [searchQuery, setSearchQuery] = useState(query);
 
   useEffect(() => {
-    if (searchQuery) {
-      const newUrl = formUrlQuery({
-        params: searchParams.toString(),
-        key: "query",
-        value: searchQuery,
-      });
-
-      router.push(newUrl, { scroll: false });
-    } else {
-      if (pathname === route) {
-        const newUrl = removeKeysFromQuery({
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery) {
+        const newUrl = formUrlQuery({
           params: searchParams.toString(),
-          keysToRemove: ["query"],
+          key: "query",
+          value: searchQuery,
         });
 
         router.push(newUrl, { scroll: false });
+      } else {
+        if (pathname === route) {
+          const newUrl = removeKeysFromUrlQuery({
+            params: searchParams.toString(),
+            keysToRemove: ["query"],
+          });
+
+          router.push(newUrl, { scroll: false });
+        }
       }
-    }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, router, route, searchParams, pathname]);
 
   return (
@@ -49,11 +54,12 @@ const LocalSearch = ({ imgSrc, placeholder, otherClasses, route }: Props) => {
     >
       <Image
         src={imgSrc}
-        alt="search"
         width={24}
         height={24}
+        alt="Search"
         className="cursor-pointer"
       />
+
       <Input
         type="text"
         placeholder={placeholder}
